@@ -70,6 +70,7 @@
                 android:textColor="#fff" />
 
             <Button
+                android:id="@+id/btnLogin"
                 style="@style/TextAppearance.AppCompat.Body1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -84,6 +85,7 @@
                 android:textStyle="normal" />
 
             <Button
+                android:id="@+id/btnSignUp"
                 style="@style/TextAppearance.AppCompat.Body1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
