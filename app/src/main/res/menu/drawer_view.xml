@@ -3,13 +3,13 @@
     <group android:checkableBehavior="single">
         <item
             android:checked="true"
-            android:id="@+id/nav_first_fragment"
-            android:title="First" />
+            android:id="@+id/map"
+            android:title="Map" />
         <item
-            android:id="@+id/nav_second_fragment"
-            android:title="Second" />
+            android:id="@+id/profile"
+            android:title="Profile" />
         <item
-            android:id="@+id/nav_third_fragment"
-            android:title="Third" />
+            android:id="@+id/addDrop"
+            android:title="Add/Drop Classes" />
     </group>
 </menu>
