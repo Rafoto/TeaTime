@@ -6,14 +6,17 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.app.Application;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.teatime.models.Event;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -23,6 +26,11 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
+import com.parse.Parse;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,7 +75,25 @@ public class MapFragment extends Fragment {
                 mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
                 mMap.clear(); //clear old markers
+                //Create marker for current user on the map
 
+                mMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(members.get(0).getLocation().getLatitude(), members.get(0).getLocation().getLongitude()))
+                        .title("You")
+                        .icon(bitmapDescriptorFromVector(getActivity(), R.drawable.cake)));
+                //Query all events
+                ParseQuery<Event> query = ParseQuery.getQuery("Event");
+                query.findInBackground(new FindCallback<Event>() {
+                    public void done(List<Event> eventsList, ParseException e) {
+                        if (e == null) {
+                            for (Event event : eventsList){
+
+                            }
+                        } else {
+                            Log.e("events", "Error: " + e.getMessage());
+                        }
+                    }
+                });
 //                CameraPosition googlePlex = CameraPosition.builder()
 //                        .target(new LatLng(members.get(0).getLocation().getLatitude(), members.get(0).getLocation().getLongitude()))
 //                        .zoom(10)
@@ -78,18 +104,19 @@ public class MapFragment extends Fragment {
 //                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(googlePlex), 10000, null);
 //
 //                mMap.addMarker(new MarkerOptions()
-//                        .position(new LatLng(members.get(0).getLocation().getLatitude(), members.get(0).getLocation().getLongitude()))
-//                        .title("You")
-//                        .icon(bitmapDescriptorFromVector(getActivity(), R.drawable.cake)));
-//                for (int i = 1; i < members.size(); i++) {
-//                    mMap.addMarker(new MarkerOptions()
-//                            .position(new LatLng(members.get(i).getLocation().getLatitude(), members.get(i).getLocation().getLongitude()))
-//                            .title("Group Member"));
+////                        .position(new LatLng(members.get(0).getLocation().getLatitude(), members.get(0).getLocation().getLongitude()))
+////                        .title("You")
+////                        .icon(bitmapDescriptorFromVector(getActivity(), R.drawable.cake)));
+////                for (int i = 1; i < members.size(); i++) {
+////                    mMap.addMarker(new MarkerOptions()
+////                            .position(new LatLng(members.get(i).getLocation().getLatitude(), members.get(i).getLocation().getLongitude()))
+////                            .title("Group Member"));
 //                }
             }
         });
         return rootView;
     }
+
 
     private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
         Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
