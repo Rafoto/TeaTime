@@ -12,11 +12,13 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
+import com.parse.ParseUser;
 
 import java.util.Map;
 import java.util.Objects;
@@ -94,8 +96,15 @@ public class MainActivity extends AppCompatActivity {
     public void selectDrawerItem(MenuItem menuItem) {
         // Create a new fragment and specify the fragment to show based on nav item clicked
     Fragment fragment = null;
-    Class fragmentClass;
+    Class fragmentClass = null;
         switch(menuItem.getItemId()) {
+            case R.id.signOut:
+                ParseUser.logOut();
+                final Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+
+                break;
         case R.id.map:
             fragmentClass = MapFragment.class;
             break;
@@ -108,7 +117,6 @@ public class MainActivity extends AppCompatActivity {
         default:
             fragmentClass = MapFragment.class;
     }
-
         try {
         fragment = (Fragment) fragmentClass.newInstance();
     } catch (Exception e) {

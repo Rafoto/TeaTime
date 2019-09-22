@@ -39,7 +39,7 @@ public class Event extends ParseObject implements Serializable {
     }
 
     public void setLocation(ParseGeoPoint location) {
-        put(KEY_DESCRIPTION, location);
+        put(LOCATION, location);
     }
 
     public String getClassName() {
