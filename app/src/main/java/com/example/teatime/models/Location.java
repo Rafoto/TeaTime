@@ -7,21 +7,20 @@ public class Location {
     private String name;
     private double longitude;
     private double latitude;
-    private static List<Location> allLocations = new ArrayList<Location>();
 
     public Location(double longitude, double latitude, String name){
-        longitude = this.longitude;
-        latitude = this.latitude;
-        name = this.name;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.name = name;
     }
 
-    public static void addElem(Location l){
-        allLocations.add(l);
+    public double getLongitude(){
+        return this.longitude;
     }
 
-    public static List<List<Double>> getAllLocations(){
+    public static List<List<Double>> getAllLocations(List<Location> allLocs){
         List<List<Double>> longAndLat = new ArrayList<>();
-        for (Location loc : allLocations) {
+        for (Location loc : allLocs) {
             List<Double> tempList = new ArrayList<>();
             tempList.add(loc.longitude);
             tempList.add(loc.latitude);
@@ -36,9 +35,7 @@ public class Location {
         riceLocs.add(new Location(29.718143, -95.401692, "Rice Memorial Center"));
         riceLocs.add(new Location(29.714983, -95.399405, "Wiess College"));
         riceLocs.add(new Location(29.718294,  -95.399969, "Fondren Library"));
-        for (Location loc : riceLocs){
-            addElem(loc);
-        }
-        System.out.println("What the fuck");
+
+        System.out.println(getAllLocations(riceLocs).toString());
     }
 }
