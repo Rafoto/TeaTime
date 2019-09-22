@@ -20,7 +20,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCj0fWnrXFUDRWRcx-cTtTMq95TpRxypgs"/>
+            android:value="AIzaSyCj0fWnrXFUDRWRcx-cTtTMq95TpRxypgs" />
 
         <activity android:name=".LoginActivity">
             <intent-filter>
