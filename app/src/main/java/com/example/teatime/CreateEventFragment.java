@@ -3,52 +3,44 @@ package com.example.teatime;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.Spinner;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+
+import com.example.teatime.models.Event;
+import com.example.teatime.models.Location;
+import com.google.android.material.textfield.TextInputEditText;
+import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
+import com.parse.SaveCallback;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link CreateEventFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link CreateEventFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class CreateEventFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    private OnFragmentInteractionListener mListener;
+    TextInputEditText etName;
+    TextInputEditText etDescription;
+    Spinner spinnerClass;
+    Spinner spinnerLocation;
+    Button btnCreateEvent;
+    Button btnCreateTAEvent;
 
     public CreateEventFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CreateEventFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static CreateEventFragment newInstance(String param1, String param2) {
         CreateEventFragment fragment = new CreateEventFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -56,10 +48,6 @@ public class CreateEventFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -69,42 +57,84 @@ public class CreateEventFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_create_event, container, false);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        etDescription = view.findViewById(R.id.etDescription);
+        etName = view.findViewById(R.id.etName);
+        spinnerClass = view.findViewById(R.id.spinnerClass);
+        spinnerLocation = view.findViewById(R.id.spinnerLocation);
+        btnCreateEvent = view.findViewById(R.id.btnCreateEvent);
+        btnCreateTAEvent = view.findViewById(R.id.btnCreateTAEvent);
+
+        ArrayAdapter classAdapter = ArrayAdapter.createFromResource(getContext(), R.array.class_array, R.layout.spinner_layout);
+        spinnerClass.setAdapter(classAdapter);
+        final List<Location> locationList = Location.getAllLocationObjects();
+        final List<String> locationNameList = new ArrayList<>();
+        for (Location location : locationList) {
+            locationNameList.add(location.getName());
         }
+        ArrayAdapter locationAdapter = ArrayAdapter.createFromResource(getContext(), R.array.location_array, R.layout.spinner_layout);
+        spinnerLocation.setAdapter(locationAdapter);
+
+        btnCreateEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Event event = new Event();
+                event.setClassName(spinnerClass.getSelectedItem().toString());
+                event.setDescription(etDescription.getText().toString());
+                event.setName(etDescription.getText().toString());
+                event.setInstructor(false);
+                int locationIndex = locationNameList.indexOf(spinnerLocation.getSelectedItem().toString());
+                event.setLocation(new ParseGeoPoint(locationList.get(locationIndex).getLatitude(), locationList.get(locationIndex).getLongitude()));
+                event.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e == null) {
+                            FragmentManager fragmentManager = getFragmentManager();
+                            fragmentManager.beginTransaction().replace(R.id.flContent, MapFragment.newInstance()).commit();
+
+                        }
+                    }
+                });
+            }
+        });
+        btnCreateTAEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Event event = new Event();
+                event.setClassName(spinnerClass.getSelectedItem().toString());
+                event.setDescription(etDescription.getText().toString());
+                event.setName(etDescription.getText().toString());
+                event.setInstructor(true);
+                int locationIndex = locationNameList.indexOf(spinnerLocation.getSelectedItem().toString());
+                event.setLocation(new ParseGeoPoint(locationList.get(locationIndex).getLatitude(), locationList.get(locationIndex).getLongitude()));
+                event.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e == null) {
+                            FragmentManager fragmentManager = getFragmentManager();
+                            fragmentManager.beginTransaction().replace(R.id.flContent, MapFragment.newInstance()).commit();
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    public void onButtonPressed(Uri uri) {
+
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
+
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
 }

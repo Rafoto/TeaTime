@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="class_array">
+        <item>COMP 215</item>
+        <item>COMP 310</item>
+        <item>MATH 210</item>
+        <item>MATH 101</item>
+    </string-array>
+
+</resources>

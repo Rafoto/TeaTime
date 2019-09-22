@@ -1,7 +1,6 @@
 package com.example.teatime.models;
 
 import com.parse.ParseClassName;
-import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 
@@ -16,7 +15,15 @@ public class Event extends ParseObject implements Serializable {
     public static final String END_TIME = "endTime";
     public static final String CLASS = "class";
     public static final String LOCATION = "location";
+    public static final String INSTRUCTOR = "isInstructor";
 
+    public boolean getInstructor() {
+        return getBoolean(INSTRUCTOR);
+    }
+
+    public void setInstructor(boolean name) {
+        put(INSTRUCTOR, name);
+    }
 
     public String getName() {
         return getString(NAME);

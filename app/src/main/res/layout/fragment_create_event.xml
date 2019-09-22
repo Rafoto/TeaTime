@@ -14,7 +14,7 @@
     ]]>
 
     <Spinner
-        android:id="@+id/spinner2"
+        android:id="@+id/spinnerLocation"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
@@ -118,7 +118,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tvClassName" />
 
     <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/tvDescription"
+        android:id="@+id/etDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:drawablePadding="12dp"
@@ -146,10 +146,26 @@
         android:textSize="20sp"
         android:textStyle="normal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/classSpinner" />
+
+    <Button
+        android:id="@+id/btnCreateTAEvent"
+        style="@style/TextAppearance.AppCompat.Body1"
+        android:layout_width="200sp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="#ccc"
+        android:clickable="true"
+        android:padding="20dp"
+        android:text="Create TA Event"
+        android:textAllCaps="false"
+        android:textColor="#003366"
+        android:textSize="20sp"
+        android:textStyle="normal"
+        app:layout_constraintBottom_toBottomOf="@+id/btnCreateEvent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btnCreateEvent" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/etName"
@@ -163,7 +179,8 @@
         android:textColor="#ffffff"
         android:textColorHint="#fff"
         android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@+id/ivCreateEventLogo"
-        tools:layout_editor_absoluteX="0dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivCreateEventLogo" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

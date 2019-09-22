@@ -4,17 +4,16 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
-import android.app.Application;
-
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 
 import com.example.teatime.models.Event;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -29,16 +28,16 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
-import com.parse.Parse;
 
-
-import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 //    private static String ARG_MEMBERS = "members";
 //    private List<Membership> members;
+    private LocationManager locationManager;
 
     public MapFragment() {
         // Required empty public constructor
@@ -62,49 +61,46 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
-
-//    @Override
-//    public void getMapAsync(OnMapReadyCallback onMapReadyCallback) {
-//        super.getMapAsync(onMapReadyCallback);
-//        mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
-//
-//        mMap.clear(); //clear old markers
-//        //Create marker for current user on the map
-//
-//        //Query all events
-//        ParseQuery<Event> query = ParseQuery.getQuery("Event");
-//        query.findInBackground(new FindCallback<Event>() {
-//            public void done(List<Event> eventsList, ParseException e) {
-//                if (e == null) {
-//                    for (Event event : eventsList){
-//
-//                    }
-//                } else {
-//                    Log.e("events", "Error: " + e.getMessage());
-//                }
-//            }
-//        });
-//
-//    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_map, container, false);
-
+        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.frg);  //use SuppoprtMapFragment for using in fragment instead of activity  MapFragment = activity   SupportMapFragment = fragment
+
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
-            public void onMapReady(GoogleMap mMap) {
+            public void onMapReady(final GoogleMap mMap) {
                 mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+                try {
+                    Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                    CameraPosition googlePlex = CameraPosition.builder()
+                            .target(new LatLng(location.getLatitude(), location.getLongitude()))
+                        .zoom(16)
+                            .bearing(0)
+                            .tilt(45)
+                            .build();
+                    mMap.animateCamera(CameraUpdateFactory.newCameraPosition(googlePlex), 1000, null);
+
+                } catch (SecurityException e) {
+                    e.printStackTrace();
+                }
+
                 //Query all events
                 ParseQuery<Event> query = ParseQuery.getQuery("Event");
                 query.findInBackground(new FindCallback<Event>() {
                     public void done(List<Event> eventsList, ParseException e) {
                         if (e == null) {
                             for (Event event : eventsList){
-                                event.get("location");
+//                                Date start = event.getStartTime();
+//                                Date end = event.getEndTime();
+                                Date now = Calendar.getInstance().getTime();
+//                                if (now.after(start) && now.before(end)) {
+                                    mMap.addMarker(new MarkerOptions()
+                                            .position(new LatLng(event.getLocation().getLatitude(), event.getLocation().getLongitude()))
+                                            .title(event.getName()).icon(bitmapDescriptorFromVector(getActivity(), event.getBoolean("isInstructor") ? R.drawable.teach : R.drawable.account_multiple)));
+//                                }
                             }
                         } else {
                             Log.e("events", "Error: " + e.getMessage());
