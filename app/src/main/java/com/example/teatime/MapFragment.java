@@ -6,22 +6,14 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Bundle;
-
-import java.text.SimpleDateFormat;
-import java.time.ZoneId;
-import java.util.Calendar;
-
-import android.app.Application;
-
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 
 import com.example.teatime.models.Event;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -36,12 +28,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
-import com.parse.Parse;
 
-import com.prolificinteractive.materialcalendarview.CalendarDay;
-import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
-
-import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -105,14 +93,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     public void done(List<Event> eventsList, ParseException e) {
                         if (e == null) {
                             for (Event event : eventsList){
-                                Date start = event.getStartTime();
-                                Date end = event.getEndTime();
+//                                Date start = event.getStartTime();
+//                                Date end = event.getEndTime();
                                 Date now = Calendar.getInstance().getTime();
-                                if (now.after(start) && now.before(end)) {
+//                                if (now.after(start) && now.before(end)) {
                                     mMap.addMarker(new MarkerOptions()
                                             .position(new LatLng(event.getLocation().getLatitude(), event.getLocation().getLongitude()))
                                             .title(event.getName()).icon(bitmapDescriptorFromVector(getActivity(), event.getBoolean("isInstructor") ? R.drawable.teach : R.drawable.account_multiple)));
-                                }
+//                                }
                             }
                         } else {
                             Log.e("events", "Error: " + e.getMessage());

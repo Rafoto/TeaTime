@@ -9,6 +9,9 @@
             android:id="@+id/profile"
             android:title="Profile" />
         <item
+            android:id="@+id/createEvent"
+            android:title="Create an Event" />
+        <item
             android:id="@+id/addDrop"
             android:title="Add/Drop Classes" />
         <item

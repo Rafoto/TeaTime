@@ -1,5 +1,11 @@
 package com.example.teatime;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Bundle;
+import android.view.MenuItem;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,16 +17,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import android.Manifest;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Bundle;
-import android.view.MenuItem;
-
 import com.google.android.material.navigation.NavigationView;
 import com.parse.ParseUser;
 
-import java.util.Map;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
@@ -110,6 +109,10 @@ public class MainActivity extends AppCompatActivity {
         case R.id.map:
             fragmentClass = MapFragment.class;
             break;
+            case R.id.createEvent:
+                fragmentClass = CreateEventFragment.class;
+                break;
+
         case R.id.profile:
             fragmentClass = ProfileFragment.class;
             break;

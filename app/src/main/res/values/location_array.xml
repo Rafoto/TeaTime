@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="location_array">
+        <item>Jones College</item>
+        <item>Rice Memorial Center</item>
+        <item>Wiess College</item>
+        <item>Duncan Hall</item>
+        <item>McMurtry College</item>
+        <item>Herman Brown Hall</item>
+        <item>Lovett College</item>
+        <item>Fondren Library</item>
+    </string-array>
+</resources>
