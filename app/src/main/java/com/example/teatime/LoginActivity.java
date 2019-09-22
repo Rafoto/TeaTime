@@ -38,9 +38,9 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         } else {
-            usernameInput = findViewById(R.id.editTextEmailAddress);
+            usernameInput = findViewById(R.id.etName);
             passwordInput = findViewById(R.id.editText_Password);
-            loginBtn = findViewById(R.id.btnLogin);
+            loginBtn = findViewById(R.id.btnCreateEvent);
             signupBtn = findViewById(R.id.btnSignUp);
 
             loginBtn.setOnClickListener(new View.OnClickListener() {
