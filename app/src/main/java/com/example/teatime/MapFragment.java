@@ -36,7 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MapFragment extends Fragment {
+public class MapFragment extends Fragment implements OnMapReadyCallback {
 //    private static String ARG_MEMBERS = "members";
 //    private List<Membership> members;
 
@@ -62,28 +62,49 @@ public class MapFragment extends Fragment {
 
     }
 
+
+//    @Override
+//    public void getMapAsync(OnMapReadyCallback onMapReadyCallback) {
+//        super.getMapAsync(onMapReadyCallback);
+//        mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+//
+//        mMap.clear(); //clear old markers
+//        //Create marker for current user on the map
+//
+//        //Query all events
+//        ParseQuery<Event> query = ParseQuery.getQuery("Event");
+//        query.findInBackground(new FindCallback<Event>() {
+//            public void done(List<Event> eventsList, ParseException e) {
+//                if (e == null) {
+//                    for (Event event : eventsList){
+//
+//                    }
+//                } else {
+//                    Log.e("events", "Error: " + e.getMessage());
+//                }
+//            }
+//        });
+//
+//    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_map, container, false);
 
-        com.google.android.gms.maps.MapFragment mapFragment = com.google.android.gms.maps.MapFragment.newInstance();  //use SuppoprtMapFragment for using in fragment instead of activity  MapFragment = activity   SupportMapFragment = fragment
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.frg);  //use SuppoprtMapFragment for using in fragment instead of activity  MapFragment = activity   SupportMapFragment = fragment
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap mMap) {
                 mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-
-                mMap.clear(); //clear old markers
-                //Create marker for current user on the map
-
                 //Query all events
                 ParseQuery<Event> query = ParseQuery.getQuery("Event");
                 query.findInBackground(new FindCallback<Event>() {
                     public void done(List<Event> eventsList, ParseException e) {
                         if (e == null) {
                             for (Event event : eventsList){
-
+                                event.get("location");
                             }
                         } else {
                             Log.e("events", "Error: " + e.getMessage());
@@ -108,10 +129,14 @@ public class MapFragment extends Fragment {
 ////                            .position(new LatLng(members.get(i).getLocation().getLatitude(), members.get(i).getLocation().getLongitude()))
 ////                            .title("Group Member"));
 //                }
+
+                mMap.clear(); //clear old markers
+
             }
         });
         return rootView;
     }
+
 
 
     private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
@@ -121,5 +146,10 @@ public class MapFragment extends Fragment {
         Canvas canvas = new Canvas(bitmap);
         vectorDrawable.draw(canvas);
         return BitmapDescriptorFactory.fromBitmap(bitmap);
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        Log.d("chibu", "success");
     }
 }
