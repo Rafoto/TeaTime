@@ -77,10 +77,6 @@ public class MapFragment extends Fragment {
                 mMap.clear(); //clear old markers
                 //Create marker for current user on the map
 
-                mMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(members.get(0).getLocation().getLatitude(), members.get(0).getLocation().getLongitude()))
-                        .title("You")
-                        .icon(bitmapDescriptorFromVector(getActivity(), R.drawable.cake)));
                 //Query all events
                 ParseQuery<Event> query = ParseQuery.getQuery("Event");
                 query.findInBackground(new FindCallback<Event>() {
