@@ -34,6 +34,10 @@ public class Location {
         riceLocs.add(new Location(29.721760,  -95.396695, "Jones College"));
         riceLocs.add(new Location(29.718143, -95.401692, "Rice Memorial Center"));
         riceLocs.add(new Location(29.714983, -95.399405, "Wiess College"));
+        riceLocs.add(new Location(29.720495, -95.398692, "Duncan Hall"));
+        riceLocs.add(new Location(29.720823, -95.397393, "McMurtry College"));
+        riceLocs.add(new Location(29.720108, -95.400341, "Herman Brown Hall"));
+        riceLocs.add(new Location(29.716668, -95.397381, "Lovett College"));
         riceLocs.add(new Location(29.718294,  -95.399969, "Fondren Library"));
 
         System.out.println(getAllLocations(riceLocs).toString());
